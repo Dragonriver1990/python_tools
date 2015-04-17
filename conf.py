@@ -26,7 +26,7 @@ class Configuration:
     dirpath=/home/xiaomin
     """
     def __init__(self,configfile = None):
-        """可以从"""
+        """可以从环境变量中读取配置文件的路径名"""
         CONF_FILE = "%s/hello.conf" % os.getenv("CONF")
         self._configFile = CONF_FILE if not configfile else CONF_FILE
         self._genConf()
