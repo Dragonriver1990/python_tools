@@ -19,5 +19,29 @@ class RedisHelper:
         self._port = int(port) if port else int(conf.get("redis","port"))
         self._redis = StrictRedis(host=self._host, port=self._port)
 
-        
+    def gen_key(self,chart_id):
+        return "%s:%s" % (self.prefix, chart_id)
+
+    def put(self, chart_id, data, expire=2000):
+        key = self.gen_key(chart_id)
+        self._redis.set(key, dumps(data))
+        self._redis.expire(key, expire)
+        retu True
+    
+    def delete(self, chart_id):
+        key = self.gen_key(chart_id)
+        self._redis.delete(key)
+
+    def deleteN(self, chart_id):
+        key = self.gen_key(chart_id)
+        keys = self._redis.keys("%s*" % key)
+        for k in keys:
+            self._redis.delete(k)
+    
+    def get(self, chart_id):
+        key = self.gen_key(chart_id)
+        data = self._redis.get(key)
+        return {} if not data else loads(data)
+
+
 
