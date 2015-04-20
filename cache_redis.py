@@ -42,6 +42,44 @@ class RedisHelper:
         key = self.gen_key(chart_id)
         data = self._redis.get(key)
         return {} if not data else loads(data)
+    
+    def hset(self, key, field, value):
+        self._redis.hset(key, field, value)
 
+    def hmget(self, key, fields):
+        return self._redis.hmget(key, fields)
 
+    def flush(self):
+        keys = self._redis.keys("%s*" % self.prefix)
+        pipe = self._redis.pipeline()
+        for key in keys:
+            pipe.delete(key)
+        pipe.execute()
 
+    @property
+    def redis(self):
+        return self._redis
+
+class ChartCacheHelper:
+    """
+        图表数据缓存
+    """
+    prefix = "bc:chart:cache"
+
+    def __init__(self):
+        self.crh = RedisHelper(prefix = ChartCacheHelper.prefix)
+
+    def put(self, chart_id, data):
+        self.crh.put(chart_id,data)
+
+    def get(self, chart_id):
+        return self.rh.get(chart_id)
+            
+    def delete(self, chart_id):
+        self.rh.delete(chart_id)
+                        
+    def deleteN(self, chart_id):
+        self.rh.deleteN(chart_id)
+                                        
+    def flush(self):
+        self.rh.flush()
