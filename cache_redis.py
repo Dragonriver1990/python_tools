@@ -55,7 +55,27 @@ class RedisHelper:
         for key in keys:
             pipe.delete(key)
         pipe.execute()
+    
+    #the type of value is list
+    def list_push(self, key, data):
+        return self._redis.rpush(key, dumps(data))
+    #pop the head element of the list
+    def list_pop(self, key):
+        return self._redis.lpop(key)
 
+    #pop all elements of the list
+    def list_all_pop(self, key):
+        while True:
+            if self.list_size(key) == 0 :
+                self._redis.delete(key)
+                break
+            res = sel._redis.lpop(key)
+            if res:
+                yield loads(res)
+    
+    #the length of list
+    def list_size(self, key):
+        return self._redis.llen(key)
     @property
     def redis(self):
         return self._redis
