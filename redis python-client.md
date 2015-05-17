@@ -38,4 +38,6 @@ Redis Python Client
 
 Redis 按照key和values，可以讲命令分为六类：Key   String Hash  List   Set    SortedSet
 
-现在分别对每类命令做概述。
+本来想对每种数据类型和操作进行编写文档的，但是发现没有必要了。
+因为StricRedis类实现了几乎全部Redis的原生命令，而且参数也基本没什么差别。因此，在使用redis python-client的时候，
+只需要查看官方文档即可。(http://redisdoc.com/)
