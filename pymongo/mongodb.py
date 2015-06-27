@@ -18,6 +18,14 @@ def default_mongo():
         'mongo_db': conf.get('mongo_db')
         })
 
+def api_mongo():
+    conf = util.config.get_section('api_buf')
+    return MongoHelper({
+        'mongo_host': conf.get('mongo_host')
+        'mongo_port': conf.get('mongo_port')
+        'mongo_db': conf.get('mongo_db')
+        })
+
     
 class MongoHelper:
     def __init__(self, config):
